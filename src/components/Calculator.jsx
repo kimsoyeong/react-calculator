@@ -106,7 +106,19 @@ class Calculator extends React.Component {
         }
         this.setState({ displayValue });
       },
-      ".": () => {},
+      ".": () => {
+        if(lastChar !== "."){ // 소수점이 연달아 입력되는 것 방지
+           if (Number(displayValue) !== 0) {
+                if(lastChar !== "" && !operatorKeys.includes(lastChar)){ // 연산자 바로 뒤가 아닌 경우
+                    displayValue += "."; // 소수점 입력
+                    this.setState({ displayValue });
+                }
+            } else { // 빈 계산기에 .을 입력하면 0.으로 입력되게
+                displayValue += "0."
+                this.setState({ displayValue });
+            } 
+        }
+      },
       "0": () => {
         if (Number(displayValue) !== 0) {
           displayValue += "0";
