@@ -69,7 +69,16 @@ class Calculator extends React.Component {
           if(displayValue.includes("÷")) {
             displayValue = displayValue.split("÷").join("/");// ÷를 /로 교체
           }
-          let tmp = "√(" + displayValue + ")";// 식
+          let tmp = displayValue;
+          if(displayValue.includes("√")){
+              displayValue = displayValue.substr(2, displayValue.length - 1);
+              displayValue = displayValue.split(")").join("");
+              let orgValue = displayValue;
+              displayValue = evalFunc(displayValue);
+              displayValue = evalFunc(Math.sqrt(displayValue));
+              tmp = "√(" + orgValue + ")";
+          }
+          tmp = "√(" + tmp + ")";// 식
           res.push(tmp);
           displayValue = evalFunc(displayValue);
           displayValue = evalFunc(Math.sqrt(displayValue));
