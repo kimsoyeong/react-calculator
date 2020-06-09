@@ -55,7 +55,21 @@ class Calculator extends React.Component {
         this.setState({ displayValue });
       },
       // TODO: 제곱근 구현
-      "√": () => {},
+      "√": () => {
+        if(lastChar !== "" && operatorKeys.includes(lastChar)){ // 5+에서 루트 누른 경우
+          displayValue = displayValue.substr(0, displayValue.length - 1); // 5만 남음
+        } else if(lastChar !== ""){
+          if(displayValue.includes("×")){
+              displayValue = displayValue.replace("×", "*"); // x를 *로 교체
+          }
+          if(displayValue.includes("÷")) {
+              displayValue = displayValue.replace("÷","/"); // ÷를 /로 교체
+          }
+          displayValue = evalFunc(displayValue);
+          displayValue = evalFunc(Math.sqrt(displayValue));
+        }
+        this.setState({ displayValue });
+      },
       // TODO: 사칙연산 구현
       "÷": () => {
         if (lastChar !== "" && !operatorKeys.includes(lastChar)) {
@@ -115,11 +129,14 @@ class Calculator extends React.Component {
         <Panel>
           <Display displayValue={this.state.displayValue} />
           <ButtonGroup onClickButton={this.onClickButton}>
-            <Button size={2} color="gray">
+            <Button size={1} color="gray">
               AC
             </Button>
             <Button size={1} color="gray">
               BS
+            </Button>
+            <Button size={1} color="gray">
+              √
             </Button>
             <Button size={1} color="gray">
               ÷
