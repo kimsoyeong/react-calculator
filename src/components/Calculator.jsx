@@ -27,7 +27,6 @@ const Box = styled.div`
   h3 {
     margin: 0px;
   };
-  onclick
 `;
 
 const evalFunc = function(string) {
@@ -61,15 +60,14 @@ class Calculator extends React.Component {
       // TODO: 제곱근 구현
       "√": () => {
         let res = [];
-        
         if(lastChar !== "" && operatorKeys.includes(lastChar)){ // 5+에서 루트 누른 경우
           displayValue = displayValue.substr(0, displayValue.length - 1); // 5만 남음
         } else if(lastChar !== ""){
           if(displayValue.includes("×")){
-              displayValue = displayValue.replace("×", "*"); // x를 *로 교체
+            displayValue = displayValue.split("×").join("*");// x를 *로 교체
           }
           if(displayValue.includes("÷")) {
-              displayValue = displayValue.replace("÷","/"); // ÷를 /로 교체
+            displayValue = displayValue.split("÷").join("/");// ÷를 /로 교체
           }
           let tmp = "√(" + displayValue + ")";// 식
           res.push(tmp);
@@ -77,9 +75,9 @@ class Calculator extends React.Component {
           displayValue = evalFunc(Math.sqrt(displayValue));
           tmp = "=" + displayValue; // 결과
           res.push(tmp);
-        }
-        history.unshift(res);
-        this.setState({ displayValue, history });
+          history.unshift(res);
+        }  
+        this.setState({ displayValue, history }); 
       },
       // TODO: 사칙연산 구현
       "÷": () => {
@@ -109,22 +107,22 @@ class Calculator extends React.Component {
           displayValue = displayValue.substr(0, displayValue.length - 1);
         } else if (lastChar !== "") {
           if(displayValue.includes("×")){
-              displayValue = displayValue.replace("×", "*"); // x를 *로 교체
+              displayValue = displayValue.split("×").join("*");// x를 *로 교체
           }
           if(displayValue.includes("÷")) {
-              displayValue = displayValue.replace("÷","/"); // ÷를 /로 교체
+              displayValue = displayValue.split("÷").join("/");// ÷를 /로 교체
           }
           let tmp = displayValue;// 식
           res.push(tmp);
           displayValue = evalFunc(displayValue);
           tmp = "=" + displayValue; // 결과
           res.push(tmp);
+          history.unshift(res);
         }
-        history.unshift(res);
-        this.setState({ displayValue, history });
+        this.setState({ displayValue, history });  
       },
       ".": () => {
-        if(lastChar !== "."){ // 소수점이 연달아 입력되는 것 방지
+        if(lastChar !== "." && !displayValue.includes(".")){ // 소수점이 여럿 입력되는 것 방지
            if (Number(displayValue) !== 0) {
                 if(lastChar !== "" && !operatorKeys.includes(lastChar)){ // 연산자 바로 뒤가 아닌 경우
                     displayValue += "."; // 소수점 입력
