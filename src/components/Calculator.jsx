@@ -37,11 +37,13 @@ const evalFunc = function(string) {
 class Calculator extends React.Component {
   // TODO: history 추가
   state = {
-    displayValue: ""
+    displayValue: "",
+    history: []
   };
 
   onClickButton = key => {
     let { displayValue = "" } = this.state;
+    let { history = [] } = this.state;
     displayValue = "" + displayValue;
     const lastChar = displayValue.substr(displayValue.length - 1);
     const operatorKeys = ["÷", "×", "-", "+"];
@@ -57,6 +59,7 @@ class Calculator extends React.Component {
       },
       // TODO: 제곱근 구현
       "√": () => {
+        let tmp = "√(";
         if(lastChar !== "" && operatorKeys.includes(lastChar)){ // 5+에서 루트 누른 경우
           displayValue = displayValue.substr(0, displayValue.length - 1); // 5만 남음
         } else if(lastChar !== ""){
@@ -66,10 +69,13 @@ class Calculator extends React.Component {
           if(displayValue.includes("÷")) {
               displayValue = displayValue.replace("÷","/"); // ÷를 /로 교체
           }
+          tmp += displayValue + ")\n";
           displayValue = evalFunc(displayValue);
           displayValue = evalFunc(Math.sqrt(displayValue));
+          tmp += "=" + displayValue;
         }
-        this.setState({ displayValue });
+        history.unshift(tmp);
+        this.setState({ displayValue, history });
       },
       // TODO: 사칙연산 구현
       "÷": () => {
@@ -94,6 +100,7 @@ class Calculator extends React.Component {
         }
       },
       "=": () => {
+        let tmp = "";
         if (lastChar !== "" && operatorKeys.includes(lastChar)) {
           displayValue = displayValue.substr(0, displayValue.length - 1);
         } else if (lastChar !== "") {
@@ -103,9 +110,12 @@ class Calculator extends React.Component {
           if(displayValue.includes("÷")) {
               displayValue = displayValue.replace("÷","/"); // ÷를 /로 교체
           }
+          tmp += displayValue + "\n";
           displayValue = evalFunc(displayValue);
+          tmp += "=" + displayValue;
         }
-        this.setState({ displayValue });
+        history.unshift(tmp);
+        this.setState({ displayValue, history });
       },
       ".": () => {
         if(lastChar !== "."){ // 소수점이 연달아 입력되는 것 방지
@@ -184,7 +194,9 @@ class Calculator extends React.Component {
           </ButtonGroup>
         </Panel>
         {/* TODO: History componet를 이용해 map 함수와 Box styled div를 이용해 history 표시 */
-            <History></History>
+            <History>
+            {this.state.history.map((x, i) => (<Box>{x}</Box>))}
+            </History>
         }
 
       </Container>
