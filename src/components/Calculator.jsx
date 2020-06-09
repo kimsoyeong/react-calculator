@@ -73,7 +73,7 @@ class Calculator extends React.Component {
           res.push(tmp);
           displayValue = evalFunc(displayValue);
           displayValue = evalFunc(Math.sqrt(displayValue));
-          tmp = "=" + displayValue; // 결과
+          tmp = "= " + displayValue; // 결과
           res.push(tmp);
           history.unshift(res);
         }  
@@ -115,7 +115,7 @@ class Calculator extends React.Component {
           let tmp = displayValue;// 식
           res.push(tmp);
           displayValue = evalFunc(displayValue);
-          tmp = "=" + displayValue; // 결과
+          tmp = "= " + displayValue; // 결과
           res.push(tmp);
           history.unshift(res);
         }
