@@ -127,7 +127,6 @@ class Calculator extends React.Component {
               displayValue = displayValue.split(")").join("");
               displayValue = evalFunc(displayValue);
               displayValue = evalFunc(Math.sqrt(displayValue));
-              tmp = "√(" + tmp + ")";
           }
           res.push(tmp);
           displayValue = evalFunc(displayValue);
@@ -215,7 +214,7 @@ class Calculator extends React.Component {
         </Panel>
         {/* TODO: History componet를 이용해 map 함수와 Box styled div를 이용해 history 표시 */
             <History id = "h">
-            {this.state.history.map((x, i) => (<Box key={i} onClick={() => this.setState({displayValue: x[0]})}><label>{x[0]}</label><br /><label>{x[1]}</label></Box>))}
+            {this.state.history.map((x, i) => (<Box key={i} onClick={() => this.setState({displayValue: x[0]})}><label>{x[0]}</label><p>{x[1]}</p></Box>))}
             </History>
         }
 
